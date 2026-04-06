@@ -1,0 +1,565 @@
+Total cooperativas: 70
+Total linhas: 490
+
+2201 - Sicredi Evolução (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+2604 - Sicredi Sul SC (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+2606 - Sicredi Vale Litoral SC (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+3003 - Sicredi Noroeste SP (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Central
+    Vida => Conecta
+3009 - Sicredi Centro Norte SP (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+3022 - Sicredi Centro Oeste Paulista (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+3027 - Sicredi Força dos Ventos SP (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+3950 - Sicredi Cerrado GO (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Agência
+    Vida => Conecta
+3953 - Sicredi Planalto Central (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0101 - Sicredi Pioneira RS (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0105 - Sicredi MP RS (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+0109 - Sicredi Caminho das Águas RS (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0116 - Sicredi Origens RS (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Central
+    Vida => Central
+0131 - Sicredi COOABCred RS (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0155 - Sicredi Gerações RS/MG (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Agência
+    MaqEquip => Central
+    Rural => Agência
+    Vida => Agência
+0157 - Sicredi Pol RS/SC (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+0167 - Sicredi Serrana RS/ES (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Central
+    Vida => Agência
+0179 - Sicredi Integração RS/MG (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0185 - Sicredi Tradição RS (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0202 - Sicredi Educação RS (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+0217 - Sicredi Uniestados (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+0226 - Sicredi Aliança RS/SC/ES (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Agência
+0228 - Sicredi Integração de Estados RS/SC/MG (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0230 - Sicredi Conexão (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0244 - Sicredi Rota das Terras RS/MG (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0258 - Sicredi Região da Produção RS/SC/MG (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0259 - Sicredi Ibiraiaras RS/MG (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0268 - Sicredi Altos da Serra RS/SC (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Conecta
+0306 - Sicredi Noroeste RS/MG (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0307 - Sicredi União RS/ES (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0333 - Sicredi Planalto RS/MG (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0361 - Sicredi das Culturas RS/MG (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Central
+    Vida => Agência
+0403 - Sicredi Centro Serra RS (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0437 - Sicredi Vale do Jaguari e Zona da Mata RS/MG (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0523 - Sicredi Essência (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+0651 - Sicredi Liberdade (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0663 - Sicredi Interestados RS/ES (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Agência
+    Vida => Conecta
+0703 - Sicredi Planalto das Águas PR/SP (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0710 - Sicredi Vanguarda PR/SP/RJ (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0715 - Sicredi Aliança PR/SP (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0717 - Sicredi Paranapanema Serrana PR/SP/RJ (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0718 - Sicredi Dexis (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Agência
+    Vida => Agência
+0723 - Sicredi Agroempresarial PR/SP (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0725 - Sicredi Integração PR/SC (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0726 - Sicredi Vale do Piquiri Abcd PR/SP (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0727 - Sicredi Grandes Lagos PR/SP (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0728 - Sicredi Rio Paraná (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0731 - Sicredi Nossa Terra PR/SP (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Conecta
+    Vida => Conecta
+0736 - Sicredi Valor Sustentável PR/SP (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0737 - Sicredi Parque das Araucárias PR/SC/SP (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0738 - Sicredi Fronteiras PR/SC/SP (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0740 - Sicredi Iguaçu PR/SC e Região Metropolitana de Campinas/SP (7 produtos)
+    Auto => Conecta
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0747 - Sicredi Medicred PR (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0749 - Sicredi Credjuris (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Central
+0751 - Sicredi Credenoreg PR (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0752 - Sicredi Empreendedores PR (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Central
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0753 - Sicredi Novos Horizontes PR/SP/RJ (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0802 - Sicredi Vale do Cerrado (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0804 - Sicredi Sudoeste MT/PA (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0805 - Sicredi Biomas (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0806 - Sicredi Araxingu (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0809 - Sicredi Integração MT/AP/PA (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Central
+    Vida => Central
+0810 - Sicredi Ouro Verde MT (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0812 - Sicredi Celeiro MT/RR (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Central
+    MaqEquip => Central
+    Rural => Agência
+    Vida => Agência
+0818 - Sicredi Grandes Rios MT/PA/AM (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0821 - Sicredi Univales MT/RO (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Conecta
+    MaqEquip => Conecta
+    Rural => Conecta
+    Vida => Conecta
+0903 - Sicredi Centro-Sul MS/BA (7 produtos)
+    Auto => Conecta
+    Residencial => Conecta
+    Empresarial => Conecta
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Conecta
+0911 - Sicredi União MS/TO (7 produtos)
+    Auto => Central
+    Residencial => Central
+    Empresarial => Central
+    Condominio => Agência
+    MaqEquip => Central
+    Rural => Central
+    Vida => Agência
+0913 - Sicredi Campo Grande MS (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Agência
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Agência
+0914 - Sicredi Celeiro Centro Oeste (7 produtos)
+    Auto => Central
+    Residencial => Agência
+    Empresarial => Central
+    Condominio => Agência
+    MaqEquip => Agência
+    Rural => Agência
+    Vida => Conecta
+
+Valores únicos de Responsável: ["Central","Agência","Conecta"]
