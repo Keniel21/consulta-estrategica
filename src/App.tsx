@@ -40,6 +40,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 
 import { supabase } from './supabase';
+import { api } from './services/api';
 
 const IconMap: Record<string, any> = {
   Car, Home, Briefcase, Building2, Wrench, Tractor, HeartPulse
@@ -319,8 +320,12 @@ const InsuranceGrid = () => {
 
   const fetchInsurers = async () => {
     setLoading(true);
-    const { data } = await supabase.from('insurers').select('*').order('name');
-    if (data) setInsurers(data);
+    try {
+      const data = await api.getInsurers();
+      if (data) setInsurers(data);
+    } catch (err) {
+      console.error('Erro ao buscar seguradoras:', err);
+    }
     setLoading(false);
   };
 
@@ -494,12 +499,13 @@ const KPIDashboard = () => {
   useEffect(() => {
     const fetchKPIs = async () => {
       setLoading(true);
-      const { data: prodData } = await supabase.from('products').select(`
-        *,
-        cooperative:cooperatives(name, code, location)
-      `);
-      if (prodData) {
-        setData(prodData);
+      try {
+        const data = await api.getProducts();
+        if (data) {
+          setData(data);
+        }
+      } catch (err) {
+        console.error('Erro ao buscar KPIs:', err);
       }
       setLoading(false);
     };
@@ -836,35 +842,32 @@ const CooperativeProfile = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setErrorMsg('');
-      
-      const { data: coopData } = await supabase
-        .from('cooperatives')
-        .select('*')
-        .or(`code.ilike.%${searchQuery}%,name.ilike.%${searchQuery}%`)
-        .limit(1)
-        .maybeSingle();
+      const fetchData = async () => {
+        setLoading(true);
+        setErrorMsg('');
+        
+        try {
+          // Sanitização básica do input de busca
+          const sanitizedQuery = searchQuery.replace(/[^a-zA-Z0-9 ]/g, '');
+          const coopData = await api.searchCooperative(sanitizedQuery);
 
-      if (coopData) {
-        setCooperative(coopData);
-        const table = activeService === 'sinistro' ? 'products' : 'renewal_products';
-        const { data: prodData } = await supabase
-          .from(table)
-          .select('*')
-          .eq('cooperative_id', coopData.id)
-          .order('name');
-
-        if (prodData) {
-          setProducts(prodData);
+          if (coopData) {
+            setCooperative(coopData);
+            // Nota: Para manter simplicidade, a busca de produtos filtrados
+            // será movida para o backend no futuro se necessário.
+            // Por enquanto, usamos a API de produtos gerais filtrada localmente para maior performance.
+            const allProducts = await api.getProducts();
+            const filteredProducts = allProducts.filter((p: any) => p.cooperative_id === coopData.id);
+            setProducts(filteredProducts);
+          } else {
+            setCooperative(null);
+            setErrorMsg('Nenhuma cooperativa encontrada com esse termo.');
+          }
+        } catch (err: any) {
+          setErrorMsg(err.message || 'Erro na busca');
         }
-      } else {
-        setCooperative(null);
-        setErrorMsg('Nenhuma cooperativa encontrada com esse termo.');
-      }
-      setLoading(false);
-    };
+        setLoading(false);
+      };
 
     fetchData();
   }, [searchQuery, activeService]);
@@ -1204,157 +1207,145 @@ const AdminRestrito = () => {
    }, [session, activeServiceAdmin]);
 
    const loadCoops = async () => {
-     setLoading(true);
-     const { data } = await supabase
-       .from('cooperatives')
-       .select('*')
-       .order('code', { ascending: true });
-     if (data) setCoops(data);
-     setLoading(false);
-   };
-
-   const loadProducts = async () => {
-     setLoading(true);
-     const table = activeServiceAdmin === 'sinistro' ? 'products' : 'renewal_products';
-     
-     const { data } = await supabase
-       .from(table)
-       .select(`
-         *,
-         cooperative:cooperatives(name, code)
-       `)
-       .order('name', { ascending: true });
-     if (data) setProducts(data);
-     setLoading(false);
-   };
-
-   const loadInsurers = async () => {
-     const { data } = await supabase.from('insurers').select('*').order('name');
-     if (data) setInsurers(data);
-   };
-
-   const filteredCoops = coops.filter(c => 
-     c.code.toLowerCase().includes(searchTerm.toLowerCase()) || 
-     c.name.toLowerCase().includes(searchTerm.toLowerCase())
-   );
-
-   const filteredProducts = products.filter(p => 
-      p.name.toLowerCase().includes(searchTermProds.toLowerCase()) || 
-      p.cooperative?.name.toLowerCase().includes(searchTermProds.toLowerCase()) ||
-      p.cooperative?.code.toLowerCase().includes(searchTermProds.toLowerCase())
-    ).sort((a, b) => {
-      if (!sortConfig) return 0;
-      
-      let valA = '';
-      let valB = '';
-
-      if (sortConfig.key === 'name') {
-        valA = a.name.toLowerCase();
-        valB = b.name.toLowerCase();
-      } else if (sortConfig.key === 'cooperative') {
-        valA = a.cooperative?.name.toLowerCase() || '';
-        valB = b.cooperative?.name.toLowerCase() || '';
+      setLoading(true);
+      try {
+        const data = await api.getCooperatives();
+        if (data) setCoops(data);
+      } catch (err) {
+        console.error('Erro ao carregar cooperativas:', err);
       }
-
-      if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
-      if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
-      return 0;
-    });
-
-    const handleSort = (key: 'name' | 'cooperative') => {
-      let direction: 'asc' | 'desc' = 'asc';
-      if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
-        direction = 'desc';
-      }
-      setSortConfig({ key, direction });
+      setLoading(false);
     };
 
-   const handleSaveCoop = async (e: React.FormEvent<HTMLFormElement>) => {
-     e.preventDefault();
-     setLoading(true);
-     const formData = new FormData(e.currentTarget);
-     const coopData = {
-       code: formData.get('code') as string,
-       name: formData.get('name') as string,
-       manager_name: formData.get('manager_name') as string,
-       phone: formData.get('phone') as string,
-       email: formData.get('email') as string,
-       location: formData.get('location') as string,
+    const loadProducts = async () => {
+      setLoading(true);
+      try {
+        const data = await api.getProducts();
+        if (data) setProducts(data);
+      } catch (err) {
+        console.error('Erro ao carregar produtos:', err);
+      }
+      setLoading(false);
+    };
+
+    const loadInsurers = async () => {
+      try {
+        const data = await api.getInsurers();
+        if (data) setInsurers(data);
+      } catch (err) {
+        console.error('Erro ao carregar seguradoras:', err);
+      }
+    };
+
+    const filteredCoops = coops.filter(c => 
+      c.code.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const filteredProducts = products.filter(p => 
+       p.name.toLowerCase().includes(searchTermProds.toLowerCase()) || 
+       p.cooperative?.name.toLowerCase().includes(searchTermProds.toLowerCase()) ||
+       p.cooperative?.code.toLowerCase().includes(searchTermProds.toLowerCase())
+     ).sort((a, b) => {
+       if (!sortConfig) return 0;
+       
+       let valA = '';
+       let valB = '';
+
+       if (sortConfig.key === 'name') {
+         valA = a.name.toLowerCase();
+         valB = b.name.toLowerCase();
+       } else if (sortConfig.key === 'cooperative') {
+         valA = a.cooperative?.name.toLowerCase() || '';
+         valB = b.cooperative?.name.toLowerCase() || '';
+       }
+
+       if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
+       if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
+       return 0;
+     });
+
+     const handleSort = (key: 'name' | 'cooperative') => {
+       let direction: 'asc' | 'desc' = 'asc';
+       if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+         direction = 'desc';
+       }
+       setSortConfig({ key, direction });
      };
 
-     let error;
-     if (editingCoop) {
-       const res = await supabase.from('cooperatives').update(coopData).eq('id', editingCoop.id);
-       error = res.error;
-     } else {
-       const res = await supabase.from('cooperatives').insert([coopData]);
-       error = res.error;
-     }
+   const handleSaveCoop = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setLoading(true);
+      const formData = new FormData(e.currentTarget);
+      const coopData: any = {
+        code: (formData.get('code') as string).replace(/[^0-9]/g, ''),
+        name: formData.get('name') as string,
+        manager_name: formData.get('manager_name') as string,
+        phone: formData.get('phone') as string,
+        email: formData.get('email') as string,
+        location: formData.get('location') as string,
+      };
 
-     if (error) alert('Erro ao salvar: ' + error.message);
-     else { setIsModalOpen(false); setEditingCoop(null); loadCoops(); }
-     setLoading(false);
-   };
+      if (editingCoop) coopData.id = editingCoop.id;
+
+      try {
+        await api.saveCooperative(coopData);
+        setIsModalOpen(false); 
+        setEditingCoop(null); 
+        loadCoops();
+      } catch (err: any) {
+        alert('Erro ao salvar: ' + err.message);
+      }
+      setLoading(false);
+    };
 
    const handleSaveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
      e.preventDefault();
      setLoading(true);
      const formData = new FormData(e.currentTarget);
-     const table = activeServiceAdmin === 'sinistro' ? 'products' : 'renewal_products';
      
-     const prodData = {
+     const prodData: any = {
        name: formData.get('name') as string,
        cooperative_id: formData.get('cooperative_id') as string,
        responsible: formData.get('responsible') as string,
        icon: formData.get('icon') as string,
        start_date: formData.get('start_date') as string || null,
-       area: formData.get('name') as string,
+       type: activeServiceAdmin,
      };
 
-     if (!prodData.cooperative_id) {
-       alert('Selecione uma cooperativa para vincular o produto.');
-       setLoading(false);
-       return;
-     }
+     if (editingProd) prodData.id = editingProd.id;
 
-     let error;
-     if (editingProd) {
-       const res = await supabase.from(table).update(prodData).eq('id', editingProd.id);
-       error = res.error;
-     } else {
-       const res = await supabase.from(table).insert([prodData]);
-       error = res.error;
+     try {
+       await api.saveProduct(prodData);
+       setIsModalProdOpen(false); 
+       setEditingProd(null); 
+       loadProducts();
+     } catch (err: any) {
+       alert('Erro ao salvar produto: ' + err.message);
      }
-
-     if (error) alert('Erro ao salvar produto: ' + error.message);
-     else { setIsModalProdOpen(false); setEditingProd(null); loadProducts(); }
      setLoading(false);
    };
 
    const handleDeleteCoop = async (id: string) => {
-     if (deleteConfirmId !== id) { setDeleteConfirmId(id); setTimeout(() => setDeleteConfirmId(null), 3000); return; }
-     
-     // Check Sinistros
-     const { count: countSinistro } = await supabase.from('products').select('*', { count: 'exact', head: true }).eq('cooperative_id', id);
-     // Check Renovação
-     const { count: countRenovacao } = await supabase.from('renewal_products').select('*', { count: 'exact', head: true }).eq('cooperative_id', id);
-     
-     const total = (countSinistro || 0) + (countRenovacao || 0);
-     if (total > 0) { 
-       alert(`Bloqueio de Segurança: Esta cooperativa possui vinculada a: ${countSinistro || 0} produtos de Sinistros e ${countRenovacao || 0} de Renovação.`); 
-       setDeleteConfirmId(null); return; 
-     }
-     
-     const { error } = await supabase.from('cooperatives').delete().eq('id', id);
-     if (error) alert('Erro ao excluir: ' + error.message); else loadCoops();
-     setDeleteConfirmId(null);
-   };
+      if (deleteConfirmId !== id) { setDeleteConfirmId(id); setTimeout(() => setDeleteConfirmId(null), 3000); return; }
+      
+      try {
+        await api.deleteCooperative(id);
+        loadCoops();
+      } catch (err: any) {
+        alert('Erro ao excluir: ' + err.message);
+      }
+      setDeleteConfirmId(null);
+    };
 
    const handleDeleteProduct = async (id: string) => {
       if (deleteConfirmProdId !== id) { setDeleteConfirmProdId(id); setTimeout(() => setDeleteConfirmProdId(null), 3000); return; }
-      const table = activeServiceAdmin === 'sinistro' ? 'products' : 'renewal_products';
-      const { error } = await supabase.from(table).delete().eq('id', id);
-      if (error) alert('Erro ao excluir: ' + error.message); else loadProducts();
+      try {
+        await api.deleteProduct(id);
+        loadProducts();
+      } catch (err: any) {
+        alert('Erro ao excluir: ' + err.message);
+      }
       setDeleteConfirmProdId(null);
     };
 
@@ -1363,7 +1354,7 @@ const AdminRestrito = () => {
       setLoading(true);
       const fd = new FormData(e.currentTarget);
       
-      const payload = {
+      const payload: any = {
         name: fd.get('name') as string,
         category: fd.get('category') as string,
         color_class: fd.get('color_class') as string,
@@ -1373,17 +1364,14 @@ const AdminRestrito = () => {
         details: editingInsurer?.details || { sinistro: [], assistencia: [], acesso: '', whatsapp: '', outros: [] }
       };
 
-      let error;
-      if (editingInsurer?.id) {
-        ({ error } = await supabase.from('insurers').update(payload).eq('id', editingInsurer.id));
-      } else {
-        ({ error } = await supabase.from('insurers').insert([payload]));
-      }
+      if (editingInsurer?.id) payload.id = editingInsurer.id;
 
-      if (error) alert('Erro ao salvar: ' + error.message);
-      else {
+      try {
+        await api.saveInsurer(payload);
         setIsModalInsurerOpen(false);
         loadInsurers();
+      } catch (err: any) {
+        alert('Erro ao salvar: ' + err.message);
       }
       setLoading(false);
     };
@@ -1416,8 +1404,12 @@ const AdminRestrito = () => {
 
     const handleDeleteInsurer = async (id: string) => {
       if (!confirm('Tem certeza que deseja excluir esta seguradora?')) return;
-      const { error } = await supabase.from('insurers').delete().eq('id', id);
-      if (error) alert('Erro ao excluir: ' + error.message); else loadInsurers();
+      try {
+        await api.deleteInsurer(id);
+        loadInsurers();
+      } catch (err: any) {
+        alert('Erro ao excluir: ' + err.message);
+      }
     };
 
     const getIconByName = (name: string) => {
@@ -1433,12 +1425,25 @@ const AdminRestrito = () => {
     const handleLogin = async (e: React.FormEvent) => {
        e.preventDefault();
        setLoading(true);
-       const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password: pass,
-       });
-       if (error) {
-          alert('Erro na autenticação: ' + error.message);
+       try {
+         const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password: pass,
+         });
+         
+         if (error) throw error;
+         
+         // Após login, verificamos se o usuário tem a role admin no servidor
+         const { data: { session } } = await supabase.auth.getSession();
+         if (session) {
+           const profile = await api.getProfile();
+           if (profile?.role !== 'admin') {
+              await supabase.auth.signOut();
+              alert('Acesso negado: Você não tem permissões administrativas.');
+           }
+         }
+       } catch (err: any) {
+          alert('Erro na autenticação: ' + err.message);
        }
        setLoading(false);
     };
