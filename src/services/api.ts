@@ -45,7 +45,7 @@ export const api = {
     method: data.id ? 'PUT' : 'POST',
     body: JSON.stringify(data),
   }),
-  deleteProduct: (id: string) => fetchAPI(`/products?id=${id}`, {
+  deleteProduct: (id: string, type?: string) => fetchAPI(`/products?id=${id}${type ? `&type=${type}` : ''}`, {
     method: 'DELETE',
   }),
   saveInsurer: (data: any) => fetchAPI('/insurers', {

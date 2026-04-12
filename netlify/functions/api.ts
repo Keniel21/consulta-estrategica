@@ -43,11 +43,17 @@ export const handler = async (event: any) => {
         return { statusCode: 200, body: JSON.stringify(data) };
       }
       if (route === '/products') {
-        // Busca unificada de sinistros e renovações
+        // Busca unificada de sinistros e renovações com discriminador de tipo
         const { data: p1, error: e1 } = await supabaseAdmin.from('products').select('*, cooperative:cooperatives(name, code, location)');
         const { data: p2, error: e2 } = await supabaseAdmin.from('renewal_products').select('*, cooperative:cooperatives(name, code, location)');
         if (e1 || e2) throw e1 || e2;
-        return { statusCode: 200, body: JSON.stringify([...(p1||[]), ...(p2||[])]) };
+
+        const results = [
+          ...(p1 || []).map(p => ({ ...p, type: 'sinistro' })),
+          ...(p2 || []).map(p => ({ ...p, type: 'renovacao' }))
+        ];
+
+        return { statusCode: 200, body: JSON.stringify(results) };
       }
       if (route === '/search-cooperative') {
         const q = event.queryStringParameters.q;

@@ -495,6 +495,7 @@ const KPIDashboard = () => {
   const [filterProd, setFilterProd] = useState('Todos');
   const [analysisBase, setAnalysisBase] = useState('Cooperativas'); // 'Produtos' ou 'Cooperativas'
   const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
+  const [activeCategory, setActiveCategory] = useState<'sinistro' | 'renovacao'>('sinistro');
 
   useEffect(() => {
     const fetchKPIs = async () => {
@@ -515,7 +516,8 @@ const KPIDashboard = () => {
   const filteredData = data.filter(d => {
     const matchResp = filterResp === 'Todos' || d.responsible === filterResp;
     const matchProd = filterProd === 'Todos' || d.name === filterProd;
-    return matchResp && matchProd;
+    const matchCat = d.type === activeCategory;
+    return matchResp && matchProd && matchCat;
   });
 
   // Calculate Adherence dynamically based on "Analysis Base"
@@ -635,7 +637,23 @@ const KPIDashboard = () => {
         {/* Header & Filters */}
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 font-headline tracking-tight">Painel de Aderência</h1>
+            <div className="flex items-center justify-between mb-8">
+              <h1 className="text-3xl font-black text-slate-900 font-headline tracking-tighter">Performance de Aderência</h1>
+              <div className="bg-slate-100 p-1.5 rounded-2xl flex items-center gap-1 shadow-inner border border-slate-200/50">
+                <button 
+                  onClick={() => setActiveCategory('sinistro')}
+                  className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeCategory === 'sinistro' ? 'bg-[#006b33] text-white shadow-lg' : 'text-slate-500 hover:text-slate-800'}`}
+                >
+                  <ShieldCheck size={16} /> SINISTROS
+                </button>
+                <button 
+                  onClick={() => setActiveCategory('renovacao')}
+                  className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeCategory === 'renovacao' ? 'bg-[#006b33] text-white shadow-lg' : 'text-slate-500 hover:text-slate-800'}`}
+                >
+                  <History size={16} /> RENOVAÇÕES
+                </button>
+              </div>
+            </div>
             <p className="text-slate-500 font-body">Visão interativa de produtos ativos por canal de atendimento.</p>
           </div>
           <div className="flex flex-wrap gap-4">
@@ -1115,31 +1133,35 @@ const CooperativeProfile = () => {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
-                          {!products.length ? (
-                            <tr><td colSpan={3} className="px-8 py-12 text-center text-slate-400 font-medium">Esta cooperativa não possui aderência a este serviço no momento.</td></tr>
-                          ) : products.map((prod) => (
-                            <tr key={prod.id} className="group hover:bg-slate-50/50 transition-colors">
-                              <td className="px-8 py-5">
-                                <div className="flex items-center gap-4">
-                                  <div className="p-2.5 bg-emerald-50 text-[#006b33] rounded-xl group-hover:scale-110 transition-transform">
-                                    {(() => {
-                                      const Icon = IconMap[prod.icon] || ShieldCheck;
-                                      return <Icon size={18} />;
-                                    })()}
+                          {(() => {
+                            const filteredProds = products.filter(p => p.type === activeService);
+                            if (!filteredProds.length) {
+                              return <tr><td colSpan={3} className="px-8 py-12 text-center text-slate-400 font-medium">Esta cooperativa não possui aderência a este serviço no momento.</td></tr>;
+                            }
+                            return filteredProds.map((prod) => (
+                              <tr key={prod.id} className="group hover:bg-slate-50/50 transition-colors">
+                                <td className="px-8 py-5">
+                                  <div className="flex items-center gap-4">
+                                    <div className="p-2.5 bg-emerald-50 text-[#006b33] rounded-xl group-hover:scale-110 transition-transform">
+                                      {(() => {
+                                        const Icon = IconMap[prod.icon] || ShieldCheck;
+                                        return <Icon size={18} />;
+                                      })()}
+                                    </div>
+                                    <span className="font-bold text-slate-700">{prod.name}</span>
                                   </div>
-                                  <span className="font-bold text-slate-700">{prod.name}</span>
-                                </div>
-                              </td>
-                              <td className="px-8 py-5 text-center">
-                                <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getBadgeClass(prod.responsible)} transition-all group-hover:px-6`}>
-                                  {prod.responsible}
-                                </span>
-                              </td>
-                              <td className="px-8 py-5 text-center text-sm font-bold text-slate-500 font-mono">
-                                {prod.start_date ? new Date(prod.start_date + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}
-                              </td>
-                            </tr>
-                          ))}
+                                </td>
+                                <td className="px-8 py-5 text-center">
+                                  <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getBadgeClass(prod.responsible)} transition-all group-hover:px-6`}>
+                                    {prod.responsible}
+                                  </span>
+                                </td>
+                                <td className="px-8 py-5 text-center text-sm font-bold text-slate-500 font-mono">
+                                  {prod.start_date ? new Date(prod.start_date + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}
+                                </td>
+                              </tr>
+                            ));
+                          })()}
                         </tbody>
                       </table>
                    </div>
@@ -1243,10 +1265,11 @@ const AdminRestrito = () => {
     );
 
     const filteredProducts = products.filter(p => 
-       p.name.toLowerCase().includes(searchTermProds.toLowerCase()) || 
-       p.cooperative?.name.toLowerCase().includes(searchTermProds.toLowerCase()) ||
-       p.cooperative?.code.toLowerCase().includes(searchTermProds.toLowerCase())
-     ).sort((a, b) => {
+        (p.name.toLowerCase().includes(searchTermProds.toLowerCase()) || 
+        p.cooperative?.name.toLowerCase().includes(searchTermProds.toLowerCase()) ||
+        p.cooperative?.code.toLowerCase().includes(searchTermProds.toLowerCase())) &&
+        p.type === activeServiceAdmin
+      ).sort((a, b) => {
        if (!sortConfig) return 0;
        
        let valA = '';
@@ -1339,15 +1362,16 @@ const AdminRestrito = () => {
     };
 
    const handleDeleteProduct = async (id: string) => {
-      if (deleteConfirmProdId !== id) { setDeleteConfirmProdId(id); setTimeout(() => setDeleteConfirmProdId(null), 3000); return; }
-      try {
-        await api.deleteProduct(id);
-        loadProducts();
-      } catch (err: any) {
-        alert('Erro ao excluir: ' + err.message);
-      }
-      setDeleteConfirmProdId(null);
-    };
+       if (deleteConfirmProdId !== id) { setDeleteConfirmProdId(id); setTimeout(() => setDeleteConfirmProdId(null), 3000); return; }
+       try {
+         const prod = products.find(p => p.id === id);
+         await api.deleteProduct(id, prod?.type);
+         loadProducts();
+       } catch (err: any) {
+         alert('Erro ao excluir: ' + err.message);
+       }
+       setDeleteConfirmProdId(null);
+     };
 
     const handleSaveInsurer = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
