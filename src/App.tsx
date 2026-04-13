@@ -527,14 +527,18 @@ const KPIDashboard = () => {
 
   if (analysisBase === 'Produtos') {
     // Total possible is 490 (or 70 if a specific product is filtered)
-    const spaceData = data.filter(d => filterProd === 'Todos' || d.name === filterProd);
+    const spaceData = data.filter(d => 
+       (filterProd === 'Todos' || d.name === filterProd) && 
+       d.type === activeCategory
+    );
     const totalPossibleSpace = spaceData.length === 0 ? 1 : spaceData.length;
     totalAtendido = filteredData.length;
     adherenceVal = (totalAtendido / totalPossibleSpace) * 100;
     labelAtendido = 'produtos ativos';
   } else {
     // Total possible is 70 cooperatives
-    const allUniqueCoopsCount = new Set(data.map(d => d.cooperative_id)).size || 70;
+    const categoryData = data.filter(d => d.type === activeCategory);
+    const allUniqueCoopsCount = new Set(categoryData.map(d => d.cooperative_id)).size || 70;
     const filteredUniqueCoopsCount = new Set(filteredData.map(d => d.cooperative_id)).size;
     totalAtendido = filteredUniqueCoopsCount;
     adherenceVal = (totalAtendido / allUniqueCoopsCount) * 100;
@@ -903,7 +907,8 @@ const CooperativeProfile = () => {
     }
   };
 
-  const distribution = products.reduce((acc: any, curr: any) => {
+  const currentServiceProducts = products.filter(p => p.type === activeService);
+  const distribution = currentServiceProducts.reduce((acc: any, curr: any) => {
     const key = curr.responsible?.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") || '';
     if (key === 'AGENCIA') acc['AGÊNCIA'] = (acc['AGÊNCIA'] || 0) + 1;
     else if (key === 'CENTRAL') acc['CENTRAL'] = (acc['CENTRAL'] || 0) + 1;
@@ -911,7 +916,7 @@ const CooperativeProfile = () => {
     return acc;
   }, { 'AGÊNCIA': 0, 'CENTRAL': 0, 'CONECTA': 0 });
 
-  const total = products.length;
+  const total = currentServiceProducts.length;
   const stats = [
     { label: 'AGÊNCIA', count: distribution['AGÊNCIA'], color: '#0ea5e9', bg: 'bg-blue-500' },
     { label: 'CENTRAL', count: distribution['CENTRAL'], color: '#006b33', bg: 'bg-[#006b33]' },
@@ -1165,9 +1170,9 @@ const CooperativeProfile = () => {
                         </tbody>
                       </table>
                    </div>
-                   {products.length > 0 && (
+                   {filteredProds.length > 0 && (
                     <div className="px-8 py-4 bg-slate-50/30 border-t border-slate-100">
-                      <p className="text-[10px] font-bold text-slate-400 italic">Mostrando {products.length} produtos registrados para esta unidade.</p>
+                      <p className="text-[10px] font-bold text-slate-400 italic">Mostrando {filteredProds.length} produtos registrados para esta unidade nesta categoria.</p>
                     </div>
                    )}
                 </div>
