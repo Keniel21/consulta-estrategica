@@ -1170,9 +1170,9 @@ const CooperativeProfile = () => {
                         </tbody>
                       </table>
                    </div>
-                   {filteredProds.length > 0 && (
+                   {currentServiceProducts.length > 0 && (
                     <div className="px-8 py-4 bg-slate-50/30 border-t border-slate-100">
-                      <p className="text-[10px] font-bold text-slate-400 italic">Mostrando {filteredProds.length} produtos registrados para esta unidade nesta categoria.</p>
+                      <p className="text-[10px] font-bold text-slate-400 italic">Mostrando {currentServiceProducts.length} produtos registrados para esta unidade nesta categoria.</p>
                     </div>
                    )}
                 </div>
