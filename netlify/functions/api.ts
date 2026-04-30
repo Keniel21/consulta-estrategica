@@ -19,7 +19,11 @@ export const handler = async (event: any) => {
   }
 
   const isAdmin = async (userId: string) => {
-    const { data } = await supabaseAdmin.from('profiles').select('role').eq('id', userId).single();
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    });
+    const { data } = await supabaseClient.from('profiles').select('role').eq('id', userId).single();
     return data?.role === 'admin';
   };
 
@@ -28,7 +32,11 @@ export const handler = async (event: any) => {
     if (httpMethod === 'GET') {
       if (route === '/profile') {
         if (!user) return { statusCode: 401, body: JSON.stringify({ error: 'Auth required' }) };
-        const { data, error } = await supabaseAdmin.from('profiles').select('role').eq('id', user.id).single();
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+          auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+        global: { headers: { Authorization: `Bearer ${token}` } }
+        });
+        const { data, error } = await supabaseClient.from('profiles').select('role').eq('id', user.id).single();
         if (error) throw error;
         return { statusCode: 200, body: JSON.stringify(data) };
       }
@@ -69,16 +77,21 @@ export const handler = async (event: any) => {
       const admin = await isAdmin(user.id);
       if (!admin) return { statusCode: 403, body: JSON.stringify({ error: 'Admin role required' }) };
 
+      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+        global: { headers: { Authorization: `Bearer ${token}` } }
+      });
+
       const payload = body ? JSON.parse(body) : {};
       const id = event.queryStringParameters?.id || payload.id;
 
       // Routing for Write Operations
       if (route === '/cooperatives') {
         if (httpMethod === 'DELETE') {
-           const { error } = await supabaseAdmin.from('cooperatives').delete().eq('id', id);
+           const { error } = await supabaseClient.from('cooperatives').delete().eq('id', id);
            if (error) throw error; return { statusCode: 204 };
         }
-        const { data, error } = await supabaseAdmin.from('cooperatives').upsert(payload).select().single();
+        const { data, error } = await supabaseClient.from('cooperatives').upsert(payload).select().single();
         if (error) throw error; return { statusCode: 200, body: JSON.stringify(data) };
       }
 
@@ -90,19 +103,19 @@ export const handler = async (event: any) => {
            // Como deletar sem saber a tabela? O ID deve ser único ou passamos o tipo via query
            const type = event.queryStringParameters?.type;
            const targetTable = type === 'renovacao' ? 'renewal_products' : 'products';
-           const { error } = await supabaseAdmin.from(targetTable).delete().eq('id', id);
+           const { error } = await supabaseClient.from(targetTable).delete().eq('id', id);
            if (error) throw error; return { statusCode: 204 };
         }
-        const { data, error } = await supabaseAdmin.from(table).upsert(payload).select().single();
+        const { data, error } = await supabaseClient.from(table).upsert(payload).select().single();
         if (error) throw error; return { statusCode: 200, body: JSON.stringify(data) };
       }
 
       if (route === '/insurers') {
         if (httpMethod === 'DELETE') {
-           const { error } = await supabaseAdmin.from('insurers').delete().eq('id', id);
+           const { error } = await supabaseClient.from('insurers').delete().eq('id', id);
            if (error) throw error; return { statusCode: 204 };
         }
-        const { data, error } = await supabaseAdmin.from('insurers').upsert(payload).select().single();
+        const { data, error } = await supabaseClient.from('insurers').upsert(payload).select().single();
         if (error) throw error; return { statusCode: 200, body: JSON.stringify(data) };
       }
     }

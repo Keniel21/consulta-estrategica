@@ -1334,6 +1334,7 @@ const AdminRestrito = () => {
      
      const prodData: any = {
        name: formData.get('name') as string,
+       area: formData.get('name') as string,
        cooperative_id: formData.get('cooperative_id') as string,
        responsible: formData.get('responsible') as string,
        icon: formData.get('icon') as string,
